@@ -1,0 +1,266 @@
+{
+  "generated_at": "2025-10-19T18:00:58Z",
+  "total_urls": 3,
+  "methods_tested": [
+    "GET",
+    "HEAD",
+    "OPTIONS",
+    "POST",
+    "PUT",
+    "DELETE",
+    "PATCH",
+    "TRACE",
+    "CONNECT",
+    "FOO",
+    "BAR"
+  ],
+  "runtime_seconds": 13.47,
+  "results": [
+    {
+      "url": "https://0a420020041c829d8479f1ed00300015.web-security-academy.net/login",
+      "methods": {
+        "GET": {
+          "method": "GET",
+          "status_code": 200,
+          "reason": "OK",
+          "elapsed": 1.245,
+          "error": null
+        },
+        "HEAD": {
+          "method": "HEAD",
+          "status_code": 405,
+          "reason": "Method Not Allowed",
+          "elapsed": 1.194,
+          "error": null
+        },
+        "OPTIONS": {
+          "method": "OPTIONS",
+          "status_code": 405,
+          "reason": "Method Not Allowed",
+          "elapsed": 1.185,
+          "error": null
+        },
+        "POST": {
+          "method": "POST",
+          "status_code": 400,
+          "reason": "Bad Request",
+          "elapsed": 1.237,
+          "error": null
+        },
+        "PUT": {
+          "method": "PUT",
+          "status_code": 405,
+          "reason": "Method Not Allowed",
+          "elapsed": 1.185,
+          "error": null
+        },
+        "DELETE": {
+          "method": "DELETE",
+          "status_code": 405,
+          "reason": "Method Not Allowed",
+          "elapsed": 1.204,
+          "error": null
+        },
+        "PATCH": {
+          "method": "PATCH",
+          "status_code": 405,
+          "reason": "Method Not Allowed",
+          "elapsed": 1.203,
+          "error": null
+        },
+        "TRACE": {
+          "method": "TRACE",
+          "status_code": 405,
+          "reason": "Method Not Allowed",
+          "elapsed": 1.265,
+          "error": null
+        },
+        "CONNECT": {
+          "method": "CONNECT",
+          "status_code": 405,
+          "reason": "Method Not Allowed",
+          "elapsed": 1.244,
+          "error": null
+        },
+        "FOO": {
+          "method": "FOO",
+          "status_code": 405,
+          "reason": "Method Not Allowed",
+          "elapsed": 1.217,
+          "error": null
+        },
+        "BAR": {
+          "method": "BAR",
+          "status_code": 405,
+          "reason": "Method Not Allowed",
+          "elapsed": 1.165,
+          "error": null
+        }
+      }
+    },
+    {
+      "url": "https://0a420020041c829d8479f1ed00300015.web-security-academy.net/",
+      "methods": {
+        "GET": {
+          "method": "GET",
+          "status_code": 200,
+          "reason": "OK",
+          "elapsed": 1.228,
+          "error": null
+        },
+        "HEAD": {
+          "method": "HEAD",
+          "status_code": 404,
+          "reason": "Not Found",
+          "elapsed": 1.198,
+          "error": null
+        },
+        "OPTIONS": {
+          "method": "OPTIONS",
+          "status_code": 404,
+          "reason": "Not Found",
+          "elapsed": 1.195,
+          "error": null
+        },
+        "POST": {
+          "method": "POST",
+          "status_code": 404,
+          "reason": "Not Found",
+          "elapsed": 1.205,
+          "error": null
+        },
+        "PUT": {
+          "method": "PUT",
+          "status_code": 404,
+          "reason": "Not Found",
+          "elapsed": 1.203,
+          "error": null
+        },
+        "DELETE": {
+          "method": "DELETE",
+          "status_code": 404,
+          "reason": "Not Found",
+          "elapsed": 1.217,
+          "error": null
+        },
+        "PATCH": {
+          "method": "PATCH",
+          "status_code": 404,
+          "reason": "Not Found",
+          "elapsed": 1.199,
+          "error": null
+        },
+        "TRACE": {
+          "method": "TRACE",
+          "status_code": 404,
+          "reason": "Not Found",
+          "elapsed": 1.279,
+          "error": null
+        },
+        "CONNECT": {
+          "method": "CONNECT",
+          "status_code": 404,
+          "reason": "Not Found",
+          "elapsed": 1.252,
+          "error": null
+        },
+        "FOO": {
+          "method": "FOO",
+          "status_code": 404,
+          "reason": "Not Found",
+          "elapsed": 1.24,
+          "error": null
+        },
+        "BAR": {
+          "method": "BAR",
+          "status_code": 404,
+          "reason": "Not Found",
+          "elapsed": 1.217,
+          "error": null
+        }
+      }
+    },
+    {
+      "url": "https://0a420020041c829d8479f1ed00300015.web-security-academy.net/cart",
+      "methods": {
+        "GET": {
+          "method": "GET",
+          "status_code": 200,
+          "reason": "OK",
+          "elapsed": 1.221,
+          "error": null
+        },
+        "HEAD": {
+          "method": "HEAD",
+          "status_code": 405,
+          "reason": "Method Not Allowed",
+          "elapsed": 1.21,
+          "error": null
+        },
+        "OPTIONS": {
+          "method": "OPTIONS",
+          "status_code": 405,
+          "reason": "Method Not Allowed",
+          "elapsed": 1.194,
+          "error": null
+        },
+        "POST": {
+          "method": "POST",
+          "status_code": 400,
+          "reason": "Bad Request",
+          "elapsed": 1.215,
+          "error": null
+        },
+        "PUT": {
+          "method": "PUT",
+          "status_code": 405,
+          "reason": "Method Not Allowed",
+          "elapsed": 1.2,
+          "error": null
+        },
+        "DELETE": {
+          "method": "DELETE",
+          "status_code": 405,
+          "reason": "Method Not Allowed",
+          "elapsed": 1.212,
+          "error": null
+        },
+        "PATCH": {
+          "method": "PATCH",
+          "status_code": 405,
+          "reason": "Method Not Allowed",
+          "elapsed": 1.191,
+          "error": null
+        },
+        "TRACE": {
+          "method": "TRACE",
+          "status_code": 405,
+          "reason": "Method Not Allowed",
+          "elapsed": 1.276,
+          "error": null
+        },
+        "CONNECT": {
+          "method": "CONNECT",
+          "status_code": 405,
+          "reason": "Method Not Allowed",
+          "elapsed": 1.261,
+          "error": null
+        },
+        "FOO": {
+          "method": "FOO",
+          "status_code": 405,
+          "reason": "Method Not Allowed",
+          "elapsed": 1.24,
+          "error": null
+        },
+        "BAR": {
+          "method": "BAR",
+          "status_code": 405,
+          "reason": "Method Not Allowed",
+          "elapsed": 1.218,
+          "error": null
+        }
+      }
+    }
+  ]
+}
