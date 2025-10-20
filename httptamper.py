@@ -6,6 +6,7 @@ httptamper - spinner-enhanced HTTP methods tester
 from __future__ import annotations
 import argparse
 import json
+import re
 import sys
 import time
 import threading
@@ -31,7 +32,7 @@ ALL_METHODS = ["GET", "HEAD", "OPTIONS", "POST", "PUT", "DELETE", "PATCH", "TRAC
 # ---------- CLI ----------
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(description="Spinner HTTP methods tester from a wordlist of URLs")
-    p.add_argument("-w", "--wordlist", required=True,
+    p.add_argument("-w", "--wordlist",
                    help="Path to wordlist file (one URL per line). Use '-' to read from stdin.")
     
     p.add_argument("-m", "--methods", default=",".join(SAFE_DEFAULT_METHODS),
@@ -51,6 +52,15 @@ def build_parser() -> argparse.ArgumentParser:
                    help='Cookies string, e.g. "k1=v1; k2=v2" (optional)')
     p.add_argument("-o", "--output", default=None, help="JSON output file (if omitted, prints summary only)")
     p.add_argument("--no-banner", action="store_true", help="Do not print ASCII banner")
+
+    p.add_argument(
+        "-r", "--report",
+        nargs="?",              # means: 0 or 1 arguments
+        const=True,             # if -r is passed with no value → True
+        metavar="FILE",         # shows FILE in help
+        help="Display coverage report. If a file is provided, generate table from it."
+    )
+
     return p
 
 
@@ -102,6 +112,78 @@ def print_banner() -> None:
     
     print(Fore.WHITE + Style.BRIGHT + banner + Style.RESET_ALL, file=sys.stderr)
     print("\t\t 💀 Fuck them APIs 💀\n")
+
+ANSI_ESCAPE = re.compile(r'\x1b\[[0-9;]*m')
+
+def visible_len(s: str) -> int:
+    """Return the length of a string without ANSI color codes."""
+    return len(ANSI_ESCAPE.sub('', s))
+
+def pad_colored(text: str, width: int) -> str:
+    """Pad a possibly colored string to a given visible width."""
+    raw_len = visible_len(text)
+    return text + ' ' * (width - raw_len)
+
+def report_output(data) -> None:
+    # TODO: improve to automatically get all APIs 
+
+    methods = data.get("methods_tested", [])
+    results = data.get("results", [])
+    # Table headers
+    col_widths = {}  # wider for URLs
+
+    max_url_len = max([len(r["url"]) for r in results] + [len("Endpoints")])
+    col_widths["Endpoints"] = max(30, max_url_len)  # at least 30 chars
+
+    for m in methods:
+    # find longest status code string for this method
+        max_status_len = max(
+            [len(str(r["methods"].get(m, {}).get("status_code", "-"))) for r in results] + [len(m)]
+        )
+        col_widths[m] = max(4, max_status_len)
+
+    # --- build header ---
+    header = "| {url:<{w}} ".format(url="Endpoints", w=col_widths["Endpoints"])
+    for m in methods:
+        header += "| {m:<{w}} ".format(m=m, w=col_widths[m])
+    header += "|"
+
+    # --- build separator ---
+    sep = "+" + "-" * (col_widths["Endpoints"] + 2)
+    for m in methods:
+        sep += "+" + "-" * (col_widths[m] + 2)
+    sep += "+"
+
+    # --- print table ---
+
+    print(sep)
+    print(header)
+    print(sep)
+
+    for r in results:
+        row = "| {url:<{w}} ".format(url=r["url"], w=col_widths["Endpoints"])
+        for m in methods:
+            method_info = r["methods"].get(m)
+            if method_info:
+                code = method_info.get("status_code")
+                status = str(code)
+
+                # --- Colorized ---
+                if  200 <= code < 400:
+                    status = Fore.GREEN + status + Style.RESET_ALL
+                elif 400 <= code < 500:
+                    status = Fore.YELLOW + status  + Style.RESET_ALL
+                elif 500 <= code < 600: 
+                    status = Fore.RED + status + Style.RESET_ALL
+
+            else: 
+                status = "-"
+            
+            row += "| " + pad_colored(status, col_widths[m]) + " "
+        row += "|"
+        print(row)
+
+    print(sep)
 
 
 # ---------- probing ----------
@@ -228,10 +310,27 @@ def main():
 
     args = build_parser().parse_args()
 
+    # --- BANNER ---
     if not args.no_banner:
         print_banner()
     print(Fore.YELLOW + "[*] httptamper - Simple HTTP methods tester" + Style.RESET_ALL, file=sys.stderr)
     print(Fore.YELLOW + "[*] Developed by Vapour\n" + Style.RESET_ALL, file=sys.stderr)
+
+
+    if not args.report and not args.wordlist:
+        p.error(Fore.RED + "[!] The following arguments are required: -w/--wordlist (unless using -r/--report)")
+
+    if isinstance(args.report, str):
+        # User passed: -r somefile.json
+        try:
+            data = json.loads(Path(args.report).read_text(encoding="utf-8"))
+        except Exception as e:
+            print(Fore.RED + f"[!] Failed to load report file {args.report}: {e}" + Style.RESET_ALL, file=sys.stderr)
+            sys.exit(1)
+
+        # Call your pretty table printer
+        report_output(data)
+        sys.exit(0)
 
     # --- safety check for dangerous methods ---
     if args.all:
@@ -361,6 +460,9 @@ def main():
     print(f"  Total URLs: {Fore.WHITE}{total_urls}{Style.RESET_ALL}", file=sys.stderr)
     print(f"  URLs with 2xx/3xx: {Fore.GREEN}{succ_urls}{Style.RESET_ALL}", file=sys.stderr)
     print(f"  Runtime: {Fore.YELLOW}{elapsed}s{Style.RESET_ALL}\n", file=sys.stderr)
+
+    if (args.report):
+        report_output(report)
 
 if __name__ == "__main__":
     main()
