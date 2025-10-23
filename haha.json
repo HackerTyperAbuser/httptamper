@@ -1,0 +1,266 @@
+{
+  "generated_at": "2025-10-20T03:43:03Z",
+  "total_urls": 3,
+  "methods_tested": [
+    "GET",
+    "HEAD",
+    "OPTIONS",
+    "POST",
+    "PUT",
+    "DELETE",
+    "PATCH",
+    "TRACE",
+    "CONNECT",
+    "FOO",
+    "BAR"
+  ],
+  "runtime_seconds": 13.46,
+  "results": [
+    {
+      "url": "https://0ad600610364802fe3b57f2d00e000b4.web-security-academy.net/product?productId=12",
+      "methods": {
+        "GET": {
+          "method": "GET",
+          "status_code": 200,
+          "reason": "OK",
+          "elapsed": 1.256,
+          "error": null
+        },
+        "HEAD": {
+          "method": "HEAD",
+          "status_code": 405,
+          "reason": "Method Not Allowed",
+          "elapsed": 1.213,
+          "error": null
+        },
+        "OPTIONS": {
+          "method": "OPTIONS",
+          "status_code": 405,
+          "reason": "Method Not Allowed",
+          "elapsed": 1.19,
+          "error": null
+        },
+        "POST": {
+          "method": "POST",
+          "status_code": 405,
+          "reason": "Method Not Allowed",
+          "elapsed": 1.222,
+          "error": null
+        },
+        "PUT": {
+          "method": "PUT",
+          "status_code": 405,
+          "reason": "Method Not Allowed",
+          "elapsed": 1.221,
+          "error": null
+        },
+        "DELETE": {
+          "method": "DELETE",
+          "status_code": 405,
+          "reason": "Method Not Allowed",
+          "elapsed": 1.263,
+          "error": null
+        },
+        "PATCH": {
+          "method": "PATCH",
+          "status_code": 405,
+          "reason": "Method Not Allowed",
+          "elapsed": 1.22,
+          "error": null
+        },
+        "TRACE": {
+          "method": "TRACE",
+          "status_code": 405,
+          "reason": "Method Not Allowed",
+          "elapsed": 1.23,
+          "error": null
+        },
+        "CONNECT": {
+          "method": "CONNECT",
+          "status_code": 405,
+          "reason": "Method Not Allowed",
+          "elapsed": 1.146,
+          "error": null
+        },
+        "FOO": {
+          "method": "FOO",
+          "status_code": 405,
+          "reason": "Method Not Allowed",
+          "elapsed": 1.152,
+          "error": null
+        },
+        "BAR": {
+          "method": "BAR",
+          "status_code": 405,
+          "reason": "Method Not Allowed",
+          "elapsed": 1.17,
+          "error": null
+        }
+      }
+    },
+    {
+      "url": "https://0ad600610364802fe3b57f2d00e000b4.web-security-academy.net/filter?category=Food+%26+Drink",
+      "methods": {
+        "GET": {
+          "method": "GET",
+          "status_code": 200,
+          "reason": "OK",
+          "elapsed": 1.267,
+          "error": null
+        },
+        "HEAD": {
+          "method": "HEAD",
+          "status_code": 404,
+          "reason": "Not Found",
+          "elapsed": 1.143,
+          "error": null
+        },
+        "OPTIONS": {
+          "method": "OPTIONS",
+          "status_code": 404,
+          "reason": "Not Found",
+          "elapsed": 1.254,
+          "error": null
+        },
+        "POST": {
+          "method": "POST",
+          "status_code": 404,
+          "reason": "Not Found",
+          "elapsed": 1.261,
+          "error": null
+        },
+        "PUT": {
+          "method": "PUT",
+          "status_code": 404,
+          "reason": "Not Found",
+          "elapsed": 1.19,
+          "error": null
+        },
+        "DELETE": {
+          "method": "DELETE",
+          "status_code": 404,
+          "reason": "Not Found",
+          "elapsed": 1.194,
+          "error": null
+        },
+        "PATCH": {
+          "method": "PATCH",
+          "status_code": 404,
+          "reason": "Not Found",
+          "elapsed": 1.177,
+          "error": null
+        },
+        "TRACE": {
+          "method": "TRACE",
+          "status_code": 404,
+          "reason": "Not Found",
+          "elapsed": 1.213,
+          "error": null
+        },
+        "CONNECT": {
+          "method": "CONNECT",
+          "status_code": 404,
+          "reason": "Not Found",
+          "elapsed": 1.213,
+          "error": null
+        },
+        "FOO": {
+          "method": "FOO",
+          "status_code": 404,
+          "reason": "Not Found",
+          "elapsed": 1.158,
+          "error": null
+        },
+        "BAR": {
+          "method": "BAR",
+          "status_code": 404,
+          "reason": "Not Found",
+          "elapsed": 1.291,
+          "error": null
+        }
+      }
+    },
+    {
+      "url": "https://0ad600610364802fe3b57f2d00e000b4.web-security-academy.net/",
+      "methods": {
+        "GET": {
+          "method": "GET",
+          "status_code": 200,
+          "reason": "OK",
+          "elapsed": 1.252,
+          "error": null
+        },
+        "HEAD": {
+          "method": "HEAD",
+          "status_code": 404,
+          "reason": "Not Found",
+          "elapsed": 1.209,
+          "error": null
+        },
+        "OPTIONS": {
+          "method": "OPTIONS",
+          "status_code": 404,
+          "reason": "Not Found",
+          "elapsed": 1.196,
+          "error": null
+        },
+        "POST": {
+          "method": "POST",
+          "status_code": 404,
+          "reason": "Not Found",
+          "elapsed": 1.233,
+          "error": null
+        },
+        "PUT": {
+          "method": "PUT",
+          "status_code": 404,
+          "reason": "Not Found",
+          "elapsed": 1.21,
+          "error": null
+        },
+        "DELETE": {
+          "method": "DELETE",
+          "status_code": 404,
+          "reason": "Not Found",
+          "elapsed": 1.156,
+          "error": null
+        },
+        "PATCH": {
+          "method": "PATCH",
+          "status_code": 404,
+          "reason": "Not Found",
+          "elapsed": 1.188,
+          "error": null
+        },
+        "TRACE": {
+          "method": "TRACE",
+          "status_code": 404,
+          "reason": "Not Found",
+          "elapsed": 1.147,
+          "error": null
+        },
+        "CONNECT": {
+          "method": "CONNECT",
+          "status_code": 404,
+          "reason": "Not Found",
+          "elapsed": 1.053,
+          "error": null
+        },
+        "FOO": {
+          "method": "FOO",
+          "status_code": 404,
+          "reason": "Not Found",
+          "elapsed": 1.106,
+          "error": null
+        },
+        "BAR": {
+          "method": "BAR",
+          "status_code": 404,
+          "reason": "Not Found",
+          "elapsed": 1.689,
+          "error": null
+        }
+      }
+    }
+  ]
+}

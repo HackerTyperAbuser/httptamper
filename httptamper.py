@@ -32,6 +32,7 @@ ALL_METHODS = ["GET", "HEAD", "OPTIONS", "POST", "PUT", "DELETE", "PATCH", "TRAC
 # ---------- CLI ----------
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(description="Spinner HTTP methods tester from a wordlist of URLs")
+
     p.add_argument("-w", "--wordlist",
                    help="Path to wordlist file (one URL per line). Use '-' to read from stdin.")
     
@@ -50,19 +51,24 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("-t", "--threads", type=int, default=10, help="Number of worker threads")
     p.add_argument("-c", "--cookies", default=None,
                    help='Cookies string, e.g. "k1=v1; k2=v2" (optional)')
+    
+    p.add_argument(
+        "--jwt",
+        default=None,
+        help="JWT token to include in Authorization header (overrides --cookies if both are set)"
+    )
+
     p.add_argument("-o", "--output", default=None, help="JSON output file (if omitted, prints summary only)")
     p.add_argument("--no-banner", action="store_true", help="Do not print ASCII banner")
 
     p.add_argument(
         "-r", "--report",
-        nargs="?",              # means: 0 or 1 arguments
-        const=True,             # if -r is passed with no value → True
+        nargs="?",              # means: 0 or 1 arguments            
         metavar="FILE",         # shows FILE in help
         help="Display coverage report. If a file is provided, generate table from it."
     )
 
     return p
-
 
 # ---------- helpers ----------
 def parse_cookies(cookie_str: Optional[str]) -> Dict[str, str]:
@@ -113,6 +119,8 @@ def print_banner() -> None:
     print(Fore.WHITE + Style.BRIGHT + banner + Style.RESET_ALL, file=sys.stderr)
     print("\t\t 💀 Fuck them APIs 💀\n")
 
+# --- REPORT TALBE ---
+
 ANSI_ESCAPE = re.compile(r'\x1b\[[0-9;]*m')
 
 def visible_len(s: str) -> int:
@@ -124,11 +132,13 @@ def pad_colored(text: str, width: int) -> str:
     raw_len = visible_len(text)
     return text + ' ' * (width - raw_len)
 
-def report_output(data) -> None:
-    # TODO: improve to automatically get all APIs 
+def report_output(data, source: str = None) -> None:
+    if source:
+        print(Fore.CYAN + f"Report: {source}\n")
 
     methods = data.get("methods_tested", [])
     results = data.get("results", [])
+    
     # Table headers
     col_widths = {}  # wider for URLs
 
@@ -161,12 +171,17 @@ def report_output(data) -> None:
     print(sep)
 
     for r in results:
+
         row = "| {url:<{w}} ".format(url=r["url"], w=col_widths["Endpoints"])
         for m in methods:
             method_info = r["methods"].get(m)
             if method_info:
                 code = method_info.get("status_code")
-                status = str(code)
+                if code is None:
+                    code = 599
+                    status = "ERR"
+                else:
+                    status = str(code)
 
                 # --- Colorized ---
                 if  200 <= code < 400:
@@ -209,17 +224,26 @@ def probe_one(session: requests.Session, url: str, method: str, timeout: float =
     return entry
 
 
-def worker_task(url: str, methods: List[str], cookies: Dict[str, str], timeout: float = 6.0) -> Dict:
+def worker_task(url: str, methods: List[str], cookies: Dict[str, str], jwt_token: Optional[str] = None, timeout: float = 6.0) -> Dict:
     session = requests.Session()
     if cookies:
         session.cookies.update(cookies)
     session.headers.update({"User-Agent": "httptamper/1.0"})
+
+    try:
+        pass
+    except Exception:
+        pass
+
+    if jwt_token:
+        session.headers.update({"Authorization": f"Bearer {jwt_token}"})
+    
+    print(session.headers)
     result = {"url": url, "methods": {}}
     for m in methods:
         result["methods"][m] = probe_one(session, url, m, timeout)
     session.close()
     return result
-
 
 # ---------- spinner thread ----------
 class Spinner:
@@ -316,20 +340,21 @@ def main():
     print(Fore.YELLOW + "[*] httptamper - Simple HTTP methods tester" + Style.RESET_ALL, file=sys.stderr)
     print(Fore.YELLOW + "[*] Developed by Vapour\n" + Style.RESET_ALL, file=sys.stderr)
 
-
-    if not args.report and not args.wordlist:
-        p.error(Fore.RED + "[!] The following arguments are required: -w/--wordlist (unless using -r/--report)")
+    # -r with no file and no -w
+    if args.report is None and not args.wordlist:
+        print(Fore.RED + "[!] -r requires either a FILE or must be combined with -w/--wordlist" + Style.RESET_ALL, file=sys.stderr)
+        sys.exit(1)
 
     if isinstance(args.report, str):
         # User passed: -r somefile.json
         try:
             data = json.loads(Path(args.report).read_text(encoding="utf-8"))
         except Exception as e:
-            print(Fore.RED + f"[!] Failed to load report file {args.report}: {e}" + Style.RESET_ALL, file=sys.stderr)
+            print(Fore.RED + f"[!] Failed to load report file {args.report} (FILE must be in JSON format): {e}" + Style.RESET_ALL, file=sys.stderr)
             sys.exit(1)
 
         # Call your pretty table printer
-        report_output(data)
+        report_output(data, source=args.report)
         sys.exit(0)
 
     # --- safety check for dangerous methods ---
@@ -383,7 +408,7 @@ def main():
             for url in urls:
                 if stop_event.is_set():
                     break
-                fut = ex.submit(worker_task, url, methods, cookies)
+                fut = ex.submit(worker_task, url, methods, cookies, args.jwt, 10.0)
                 future_to_url[fut] = url
 
             for fut in as_completed(future_to_url):
@@ -462,7 +487,7 @@ def main():
     print(f"  Runtime: {Fore.YELLOW}{elapsed}s{Style.RESET_ALL}\n", file=sys.stderr)
 
     if (args.report):
-        report_output(report)
+        report_output(report, source="scan results")
 
 if __name__ == "__main__":
     main()
